@@ -15,3 +15,9 @@ pip install flask
 
 # to install Flask-SQLAlchemy
 pip install Flask-SQLAlchemy
+
+# to write all frameworks on a text file
+pip freeze > requirements.txt
+
+# to install flask login
+pip install flask_login
