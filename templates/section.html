@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title text-center">Add Section</h3>
+                    <form method="post">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">title</label>
+                            <input type="text" class="form-control" id="title" name="title" placeholder="Enter your title">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Add</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

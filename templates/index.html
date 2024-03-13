@@ -33,86 +33,31 @@
       <div class="col-md-8">
           <h2>Books</h2>
           <div class="row row-cols-1 row-cols-md-2 g-4">
+            {% for book in books %}
               <div class="col">
                   <div class="card" style="width: 18rem;">
-                      <img src="/static/python-cover.jpeg" class="card-img-top" alt="...">
+                      <img src="{{'data:image/jpeg;base64,' + book.image}}" class="card-img-top" alt="...">
                       <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
+                        <h5 class="card-title">{{book.title}}</h5>
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                        <a href="{{url_for('get_pdf', id=book.id)}}" class="btn btn-primary">View book</a>
                       </div>
-                    </div>
+                  </div>
               </div>
-              <div class="col">
-                  <div class="card" style="width: 18rem;">
-                      <img src="/static/python-cover.jpeg" class="card-img-top" alt="...">
-                      <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                      </div>
-                    </div>
-              </div>
-            </div>
+            {% endfor %}
+          </div>
       </div>
       <div class="col-md-4">
           <h2>Sections</h2>
+          {% for section in sections %}
           <div class="card border-primary mb-3" style="max-width: 18rem;">
               <div class="card-header">Header</div>
               <div class="card-body text-primary">
-                <h5 class="card-title">Primary card title</h5>
+                <h5 class="card-title">{{section.title}}</h5>
                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
               </div>
-            </div>
-            <div class="card border-secondary mb-3" style="max-width: 18rem;">
-              <div class="card-header">Header</div>
-              <div class="card-body text-secondary">
-                <h5 class="card-title">Secondary card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              </div>
-            </div>
-            <div class="card border-success mb-3" style="max-width: 18rem;">
-              <div class="card-header">Header</div>
-              <div class="card-body text-success">
-                <h5 class="card-title">Success card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              </div>
-            </div>
-            <div class="card border-danger mb-3" style="max-width: 18rem;">
-              <div class="card-header">Header</div>
-              <div class="card-body text-danger">
-                <h5 class="card-title">Danger card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              </div>
-            </div>
-            <div class="card border-warning mb-3" style="max-width: 18rem;">
-              <div class="card-header">Header</div>
-              <div class="card-body">
-                <h5 class="card-title">Warning card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              </div>
-            </div>
-            <div class="card border-info mb-3" style="max-width: 18rem;">
-              <div class="card-header">Header</div>
-              <div class="card-body">
-                <h5 class="card-title">Info card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              </div>
-            </div>
-            <div class="card border-light mb-3" style="max-width: 18rem;">
-              <div class="card-header">Header</div>
-              <div class="card-body">
-                <h5 class="card-title">Light card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              </div>
-            </div>
-            <div class="card border-dark mb-3" style="max-width: 18rem;">
-              <div class="card-header">Header</div>
-              <div class="card-body">
-                <h5 class="card-title">Dark card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              </div>
-            </div>
+          </div>
+          {% endfor %}
       </div>
   </div>
 </div>

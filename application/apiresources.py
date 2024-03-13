@@ -1,27 +1,17 @@
 from flask_restful import Resource, reqparse
 from application.models import Book
 from sqlalchemy import BLOB
-from flask_restful import Api
-from flask import current_app as app
-
-api = Api(app)
-
-
-parser = reqparse.RequestParser()
-parser.add_argument('title', type=str, help='Rate to charge for this resource')
-parser.add_argument('author', type=str,
-                    help='Rate to charge for this resource')
-parser.add_argument('stock', type=int, help='Rate to charge for this resource')
-parser.add_argument('image', type=BLOB, help='Rate to charge for this resource')
-parser.add_argument('content', type=BLOB,
-                    help='Rate to charge for this resource')
-parser.add_argument('section_id', type=int,
-                    help='Rate to charge for this resource')
-
-args = parser.parse_args()
-
+from application.models import Section, db
 
 class BookResource(Resource):
+    def __init__(self):
+        self.parser = reqparse.RequestParser()
+        self.parser.add_argument('title', type=str, help='Rate to charge for this resource')
+        self.parser.add_argument('author', type=str, help='Rate to charge for this resource')
+        self.parser.add_argument('stock', type=int, help='Rate to charge for this resource')
+        self.parser.add_argument('image', type=BLOB, help='Rate to charge for this resource')
+        self.parser.add_argument('content', type=BLOB, help='Rate to charge for this resource')
+        self.parser.add_argument('section_id', type=int, help='Rate to charge for this resource')
     def get(self, book_id):
         book = Book.query.get(book_id)
         if book:
@@ -72,4 +62,46 @@ class BookResource(Resource):
         return {'message': 'Book created'}, 201
 
 
-api.add_resource(BookResource, '/api/book/<int:book_id>', '/api/book')
+class SectionResource(Resource):
+    def __init__(self):
+        self.parser = reqparse.RequestParser()
+        self.parser.add_argument('title', type=str,
+                                 help='Title of the section')
+
+    def get(self, section_id):
+        section = Section.query.get(section_id)
+        if section:
+            section_dict = {
+                'id': section.id,
+                'title': section.title,
+                # Optionally, you may include other properties of the section
+            }
+            return section_dict, 200
+        else:
+            return {'message': 'Section not found'}, 404
+
+    def put(self, section_id):
+        args = self.parser.parse_args()
+        section = Section.query.get(section_id)
+        if section:
+            section.title = args['title']
+            db.session.commit()
+            return {'message': 'Section updated'}, 200
+        else:
+            return {'message': 'Section not found'}, 404
+
+    def delete(self, section_id):
+        section = Section.query.get(section_id)
+        if section:
+            db.session.delete(section)
+            db.session.commit()
+            return {'message': 'Section deleted'}, 200
+        else:
+            return {'message': 'Section not found'}, 404
+
+    def post(self):
+        args = self.parser.parse_args()
+        section = Section(title=args['title'])
+        db.session.add(section)
+        db.session.commit()
+        return {'message': 'Section created'}, 201
