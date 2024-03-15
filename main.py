@@ -30,6 +30,7 @@ app.app_context().push()
 from application.authrouters import *
 from application.sectionrouters import *
 from application.bookrouters import *
+from application.adminroutes import *
 from application.apiresources import BookResource, SectionResource
 api.add_resource(BookResource, '/api/book/<int:book_id>', '/api/book')
 api.add_resource(SectionResource, '/api/section/<int:section_id>',
@@ -38,7 +39,7 @@ api.add_resource(SectionResource, '/api/section/<int:section_id>',
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(user_id)
+    return User.query.filter_by(id=user_id).first()
 
 
 if __name__ == "__main__":

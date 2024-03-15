@@ -4,27 +4,30 @@
 <div class="container mt-4">
   <!-- Search Bar -->
   <div class="input-group mb-3">
+    <form class="d-flex">
       <input type="text" class="form-control" placeholder="Search books..." aria-label="Search books"
-          aria-describedby="basic-addon2">
+          aria-describedby="basic-addon2" name="searchby">
       <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+          <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
       </div>
+      <a href="{{ url_for('home') }}" class="btn btn-light">clear</a>
+    </form>
   </div>
 
   <!-- Filter Options -->
   <div class="row mb-4">
       <div class="col-md-6">
           <!-- Add filter options here -->
+          <form class="d-flex">
           <label for="filterCategory">Filter by Category:</label>
-          <select class="form-control" id="filterCategory">
+          <select class="form-control" id="filterCategory" name="searchby">
               <option>All Categories</option>
-              <option>Category 1</option>
-              <option>Category 2</option>
-              <!-- Add more options as needed -->
+            {% for section in filter_sections %}
+              <option value="{{section.title}}">{{section.title}}</option>
+            {% endfor %}
           </select>
-      </div>
-      <div class="col-md-6">
-          <!-- Add more filter options here -->
+          <button class="btn btn-outline-secondary" type="submit">filter</button>
+        </form>
       </div>
   </div>
 
@@ -33,6 +36,7 @@
       <div class="col-md-8">
           <h2>Books</h2>
           <div class="row row-cols-1 row-cols-md-2 g-4">
+            {% if books|length > 0 %}
             {% for book in books %}
               <div class="col">
                   <div class="card" style="width: 18rem;">
@@ -40,15 +44,23 @@
                       <div class="card-body">
                         <h5 class="card-title">{{book.title}}</h5>
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        {% if current_user.role=='admin' %}
                         <a href="{{url_for('get_pdf', id=book.id)}}" class="btn btn-primary">View book</a>
+                        {% else %}
+                        <a href="{{url_for('reuested_book', id=book.id)}}" class="btn btn-primary">request</a>
+                        {% endif %}
                       </div>
                   </div>
               </div>
             {% endfor %}
+            {% else %}
+            <p>No books found.</p>
+            {% endif %}
           </div>
       </div>
       <div class="col-md-4">
           <h2>Sections</h2>
+          {% if sections|length > 0 %}
           {% for section in sections %}
           <div class="card border-primary mb-3" style="max-width: 18rem;">
               <div class="card-header">Header</div>
@@ -58,6 +70,9 @@
               </div>
           </div>
           {% endfor %}
+          {% else %}
+          <p>No sections found.</p>
+          {% endif %}
       </div>
   </div>
 </div>

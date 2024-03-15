@@ -1,29 +1,29 @@
 {% extends "base.html" %}
 {% block title %}requests{% endblock %}
 {% block content %}
-{% if requesteds|length > 0 %}
-{% for requested in requesteds %}
-<div class="d-flex mb-3"> 
-    <div class="shadow p-3 bg-body-tertiary rounded p-2 flex-grow-1">{{requested.book_name}} <a href="" data-bs-toggle="modal" data-bs-target="{{'#staticBackdrop'+requested.id|string}}">{{requested.username}}</a></div>
-    {% if current_user.role=='librarian' %}
-    {% if requested.request_status == 'pending' %}
-    <a href="{{url_for('route.reject_book', id = requested.id)}}" class="btn btn-danger me-2 p-2 ">reject</a>
-    <a href="{{url_for('route.grant_book', id = requested.id)}}" class="btn btn-success me-2 p-2 ">grant</a>
-    {% elif requested.request_status == 'granted' %}
-    <a href="{{url_for('route.revoke_book', id = requested.id)}}" class="btn btn-danger p-2 ">revoke</a>
-    <button type="button" class="btn btn-success me-2 p-2 " disabled>{{requested.request_status}}</button>
-    {% elif requested.request_status == 'revoked' %}
-    <button type="button" class="btn btn-warning me-2 p-2 " disabled>{{requested.request_status}}</button>
-    {% elif requested.request_status == 'rejected' %}
-    <button type="button" class="btn btn-danger me-2 p-2 " disabled>{{requested.request_status}}</button>
-    {% elif requested.request_status == 'returned' %}
-    <button type="button" class="btn btn-success me-2 p-2 " disabled>{{requested.request_status}}</button>
-    {% endif %}
-    {% else %}
-    <button type="button" class="btn btn-dark me-2 p-2 " disabled>{{requested.request_status}}</button>
-    {% endif %}
-</div>
-{% endfor %}
+{% if all_requests|length > 0 %}
+    {% for requested in all_requests %}
+    <div class="d-flex mb-3"> 
+        <div class="shadow p-3 bg-body-tertiary rounded p-2 flex-grow-1">{{requested.book_name}} <a href="" data-bs-toggle="modal" data-bs-target="{{'#staticBackdrop'+requested.id|string}}">{{requested.username}}</a></div>
+        {% if current_user.role=='admin' %}
+            {% if requested.status == 'pending' %}
+            <a href="{{url_for('reject_book', id = requested.id)}}" class="btn btn-danger me-2 p-2 ">reject</a>
+            <a href="{{url_for('grant_book', id = requested.id)}}" class="btn btn-success me-2 p-2 ">grant</a>
+            {% elif requested.status == 'granted' %}
+            <a href="{{url_for('revoke_book', id = requested.id)}}" class="btn btn-danger p-2 ">revoke</a>
+            <button type="button" class="btn btn-success me-2 p-2 " disabled>{{requested.status}}</button>
+            {% elif requested.status == 'revoked' %}
+            <button type="button" class="btn btn-warning me-2 p-2 " disabled>{{requested.status}}</button>
+            {% elif requested.status == 'rejected' %}
+            <button type="button" class="btn btn-danger me-2 p-2 " disabled>{{requested.status}}</button>
+            {% elif requested.status == 'returned' %}
+            <button type="button" class="btn btn-success me-2 p-2 " disabled>{{requested.status}}</button>
+            {% endif %}
+        {% else %}
+            <button type="button" class="btn btn-dark me-2 p-2 " disabled>{{requested.status}}</button>
+        {% endif %}
+    </div>
+    {% endfor %}
 {% else %}
 <p class="text-warning">No requests found</p>
 {% endif %}

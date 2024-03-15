@@ -7,8 +7,8 @@ from flask_login import login_user, logout_user
 from flask_login import login_required
 
 
-
 @app.route("/section", methods=['GET', 'POST'])
+@login_required
 def add_section():
     if request.method == 'POST':
         title = request.form['title']

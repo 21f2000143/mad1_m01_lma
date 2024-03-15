@@ -26,7 +26,7 @@ class BookResource(Resource):
             return {'message': 'Book not found'}, 404
 
     def put(self, book_id):
-        args = parser.parse_args()
+        args = self.parser.parse_args()
         book = Book.query.get(book_id)
         if book:
             book.title = args['title']
@@ -49,7 +49,7 @@ class BookResource(Resource):
             return {'message': 'Book not found'}, 404
 
     def post(self):
-        args = parser.parse_args()
+        args = self.parser.parse_args()
         book = Book(
             title=args['title'],
             author=args['author'],
